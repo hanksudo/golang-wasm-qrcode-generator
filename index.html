@@ -3,12 +3,7 @@
 <head>
     <title>Sweep Playground</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body>
-    <input type="text" id="inputField" name="inputField" class="w-full h-10 px-3 text-base placeholder-gray-600 border rounded-lg focus:shadow-outline">
-    <button onclick="generateQR()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Generate QR Code</button>
-    <img id="qrImage">
-    <script src="wasm_exec.js"></script>
+    <script src="./wasm_exec.js"></script>
     <script>
         const go = new Go();
         WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
@@ -25,5 +20,11 @@
             const byteArray = go.exports.GenerateQRCode(input);
             displayQRCode(byteArray);
         }
+    </script>
+</head>
+<body>
+    <input type="text" id="inputField" name="inputField" class="w-full h-10 px-3 text-base placeholder-gray-600 border rounded-lg focus:shadow-outline">
+    <button onclick="generateQR()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Generate QR Code</button>
+    <img id="qrImage">
 </body>
 </html>
