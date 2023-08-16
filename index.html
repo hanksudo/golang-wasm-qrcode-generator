@@ -14,8 +14,6 @@
             go.run(result.instance);
             go.exports.jsQRCode = displayQRCode;
         });
-
-        function displayQRCode(byteArray) {
         function displayQRCode(byteArray) {
             const b64 = btoa(new TextDecoder().decode(byteArray));
             document.getElementById('qrImage').src = 'data:image/png;base64,' + b64;
@@ -26,7 +24,5 @@
             const byteArray = go.exports.GenerateQRCode(input);
             displayQRCode(byteArray);
         }
-        }
-    </script>
 </body>
 </html>
