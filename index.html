@@ -8,7 +8,6 @@
         const go = new Go();
         WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
             go.run(result.instance);
-            go.exports.jsQRCode = displayQRCode;
         });
         function displayQRCode(byteArray) {
             const b64 = btoa(new TextDecoder().decode(byteArray));

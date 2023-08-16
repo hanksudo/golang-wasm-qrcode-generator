@@ -1,12 +1,8 @@
 package main
 
 import (
-	"syscall/js"
-
 	"github.com/skip2/go-qrcode"
 )
-
-var jsQRCode js.Value
 
 func GenerateQRCode(input string) ([]byte, error) {
 	png, err := qrcode.Encode(input, qrcode.Medium, 256)
