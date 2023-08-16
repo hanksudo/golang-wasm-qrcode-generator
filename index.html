@@ -15,13 +15,17 @@
             go.exports.jsQRCode = displayQRCode;
         });
 
-        function displayQRCode(b64) {
+        function displayQRCode(byteArray) {
+        function displayQRCode(byteArray) {
+            const b64 = btoa(new TextDecoder().decode(byteArray));
             document.getElementById('qrImage').src = 'data:image/png;base64,' + b64;
         }
 
         function generateQR() {
             const input = document.getElementById('inputField').value;
-            go.exports.GenerateQRCode(input);
+            const byteArray = go.exports.GenerateQRCode(input);
+            displayQRCode(byteArray);
+        }
         }
     </script>
 </body>
