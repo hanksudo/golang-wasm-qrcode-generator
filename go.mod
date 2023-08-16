@@ -1,4 +1,4 @@
-module sweep-playground
+module golang-wasm-qrcode-generator
 
 go 1.20
 
