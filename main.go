@@ -1,9 +1,9 @@
 package main
 
 import (
-	"encoding/base64"
-	"github.com/skip2/go-qrcode"
 	"syscall/js"
+
+	"github.com/skip2/go-qrcode"
 )
 
 var jsQRCode js.Value
@@ -16,3 +16,6 @@ func GenerateQRCode(input string) ([]byte, error) {
 	return png, nil
 }
 
+func main() {
+
+}

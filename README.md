@@ -12,6 +12,10 @@ This will generate a WASM file named `main.wasm`. Please ensure that the `main.w
 
 ## Using the WASM file in HTML
 
+```
+cp $(go env GOROOT)/misc/wasm/wasm_exec.js .
+```
+
 To use the WASM file in HTML, you need to load it using the WebAssembly JavaScript API. You can then call the exported Go function and display the returned QR code.
 
 Before using the example, please ensure that the `main.wasm` file exists in the repository. Here is an example:

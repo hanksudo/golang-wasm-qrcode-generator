@@ -1,3 +1,4 @@
-generate:
-    GOOS=js GOARCH=wasm go build -o main.wasm
+.PHONY: generate
 
+generate:
+	GOOS=js GOARCH=wasm go build -o main.wasm
