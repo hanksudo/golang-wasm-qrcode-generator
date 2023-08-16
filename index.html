@@ -7,6 +7,7 @@
     <input type="text" id="inputField" name="inputField">
     <button onclick="generateQR()">Generate QR Code</button>
     <img id="qrImage">
+    <script src="wasm_exec.js"></script>
     <script>
         const go = new Go();
         WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
