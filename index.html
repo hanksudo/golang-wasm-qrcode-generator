@@ -3,21 +3,18 @@
 <head>
     <title>Sweep Playground</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="./wasm_exec.js"></script>
-    <script>
-        const go = new Go();
-        WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
-            go.run(result.instance);
-        });
+    <script type="module">
+        import init, { generate_qr_code } from './pkg/sweep_playground.js';
+        init('/pkg/sweep_playground_bg.wasm');
         function displayQRCode(byteArray) {
             const b64 = btoa(new TextDecoder().decode(byteArray));
             document.getElementById('qrImage').src = 'data:image/png;base64,' + b64;
         }
 
-        function generateQR() {
+        async function generateQR() {
             const input = document.getElementById('inputField').value;
-            const byteArray = go.exports.GenerateQRCode(input);
-            displayQRCode(byteArray);
+            const qrCodeBase64 = await generate_qr_code(input);
+            document.getElementById('qrImage').src = 'data:image/png;base64,' + qrCodeBase64;
         }
     </script>
 </head>
