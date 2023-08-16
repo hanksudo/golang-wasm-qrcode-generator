@@ -8,21 +8,21 @@
     <button onclick="generateQR()">Generate QR Code</button>
     <img id="qrImage">
     <script>
-        const go = new Go();
-        WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
-            go.run(result.instance);
-        });
-
         function displayQRCode(b64) {
             document.getElementById('qrImage').src = 'data:image/png;base64,' + b64;
         }
 
         function generateQR() {
-            const input = document.getElementById('inputField').value;
-            go.exports.GenerateQRCode(input);
+            const go = new Go();
+            WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+                go.run(result.instance);
+                go.exports.jsQRCode = displayQRCode;
+                const input = document.getElementById('inputField').value;
+                go.exports.GenerateQRCode(input);
+            }).catch((error) => {
+                console.error('Error loading WASM file:', error);
+            });
         }
-
-        go.exports.jsQRCode = displayQRCode;
     </script>
 </body>
 </html>
