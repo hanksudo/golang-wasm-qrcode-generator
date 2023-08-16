@@ -1,4 +1,4 @@
-# sweep-say-hello
+# sweep-playground
 
 ## Compiling Go code to WASM
 
