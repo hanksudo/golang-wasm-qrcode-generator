@@ -462,32 +462,35 @@
 			};
 		}
 
-		async run(instance) {
-			if (!(instance instanceof WebAssembly.Instance)) {
-				throw new Error("Go.run: WebAssembly.Instance expected");
-			}
-			this._inst = instance;
-			this.mem = new DataView(this._inst.exports.mem.buffer);
-			this._values = [ // JS values that Go currently has references to, indexed by reference id
-				NaN,
-				0,
-				null,
-				true,
-				false,
-				globalThis,
-				this,
-			];
-			this._goRefCounts = new Array(this._values.length).fill(Infinity); // number of references that Go has to a JS value, indexed by reference id
-			this._ids = new Map([ // mapping from JS values to reference ids
-				[0, 1],
-				[null, 2],
-				[true, 3],
-				[false, 4],
-				[globalThis, 5],
-				[this, 6],
-			]);
-			this._idPool = [];   // unused ids that have been garbage collected
-			this.exited = false; // whether the Go program has exited
+  async run(instance) {
+  	if (this._inst) {
+  		throw new Error("Go program is already initialized");
+  	}
+  	if (!(instance instanceof WebAssembly.Instance)) {
+  		throw new Error("Go.run: WebAssembly.Instance expected");
+  	}
+  	this._inst = instance;
+  	this.mem = new DataView(this._inst.exports.mem.buffer);
+  	this._values = [ // JS values that Go currently has references to, indexed by reference id
+  		NaN,
+  		0,
+  		null,
+  		true,
+  		false,
+  		globalThis,
+  		this,
+  	];
+  	this._goRefCounts = new Array(this._values.length).fill(Infinity); // number of references that Go has to a JS value, indexed by reference id
+  	this._ids = new Map([ // mapping from JS values to reference ids
+  		[0, 1],
+  		[null, 2],
+  		[true, 3],
+  		[false, 4],
+  		[globalThis, 5],
+  		[this, 6],
+  	]);
+  	this._idPool = [];   // unused ids that have been garbage collected
+  	this.exited = false; // whether the Go program has exited
 
 			// Pass command line arguments and environment variables to WebAssembly by writing them to the linear memory.
 			let offset = 4096;
@@ -538,15 +541,18 @@
 			await this._exitPromise;
 		}
 
-		_resume() {
-			if (this.exited) {
-				throw new Error("Go program has already exited");
-			}
-			this._inst.exports.resume();
-			if (this.exited) {
-				this._resolveExitPromise();
-			}
-		}
+  _resume() {
+  	if (!this._inst) {
+  		throw new Error("Go program is not initialized");
+  	}
+  	if (this.exited) {
+  		throw new Error("Go program has already exited");
+  	}
+  	this._inst.exports.resume();
+  	if (this.exited) {
+  		this._resolveExitPromise();
+  	}
+  }
 
 		_makeFuncWrapper(id) {
 			const go = this;
