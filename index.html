@@ -5,5 +5,24 @@
 </head>
 <body>
     <input type="text" id="inputField" name="inputField">
+    <button onclick="generateQR()">Generate QR Code</button>
+    <img id="qrImage">
+    <script>
+        const go = new Go();
+        WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+            go.run(result.instance);
+        });
+
+        function displayQRCode(b64) {
+            document.getElementById('qrImage').src = 'data:image/png;base64,' + b64;
+        }
+
+        function generateQR() {
+            const input = document.getElementById('inputField').value;
+            go.exports.GenerateQRCode(input);
+        }
+
+        go.exports.jsQRCode = displayQRCode;
+    </script>
 </body>
 </html>

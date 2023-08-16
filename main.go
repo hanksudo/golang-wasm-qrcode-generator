@@ -1,19 +1,18 @@
 package main
 
 import (
+	"encoding/base64"
 	"github.com/skip2/go-qrcode"
-	"io/ioutil"
-	"log"
+	"syscall/js"
 )
 
-func main() {
-	png, err := qrcode.Encode("https://example.org", qrcode.Medium, 256)
+var jsQRCode js.Value
+
+func GenerateQRCode(input string) ([]byte, error) {
+	png, err := qrcode.Encode(input, qrcode.Medium, 256)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	err = ioutil.WriteFile("qrcode.png", png, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
+	return png, nil
 }
 
