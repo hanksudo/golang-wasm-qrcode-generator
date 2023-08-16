@@ -8,16 +8,13 @@
         const go = new Go();
         WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
             go.run(result.instance);
+            generateQR();
         });
-        function displayQRCode(byteArray) {
-            const b64 = btoa(new TextDecoder().decode(byteArray));
-            document.getElementById('qrImage').src = 'data:image/png;base64,' + b64;
-        }
 
         function generateQR() {
             const input = document.getElementById('inputField').value;
-            const byteArray = go.exports.GenerateQRCode(input);
-            displayQRCode(byteArray);
+            const qrCodeBase64 = generateQRCode(input);
+            document.getElementById('qrImage').src = 'data:image/png;base64,' + qrCodeBase64;
         }
     </script>
 </head>
